@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("Admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  phone     String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+  addresses Address[]
+  wishlist  Wishlist[]
+  reviews   Review[]
+  subscriptions Subscription[]
+  walletBalance Decimal    @default(0)
+  walletTopUps  WalletTopUp[]
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Decimal
+  oldPrice    Decimal?
+  rating      Float?
+  imageUrl    String?
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  inventory   Inventory?
+  orderItems  OrderItem[]
+  reviews     Review[]
+  wishlists   Wishlist[]
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+}
+
+model Order {
+  id          Int        @id @default(autoincrement())
+  customer    Customer   @relation(fields: [customerId], references: [id])
+  customerId  Int
+  status      String
+  total       Decimal
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  items       OrderItem[]
+  address     Address?   @relation(fields: [addressId], references: [id])
+  addressId   Int?
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int
+  price     Decimal
+}
+
+model Inventory {
+  id          Int      @id @default(autoincrement())
+  product     Product  @relation(fields: [productId], references: [id])
+  productId   Int      @unique
+  stock       Int
+  minQuantity Int
+  expiryDate  DateTime?
+}
+
+model Address {
+  id          Int      @id @default(autoincrement())
+  customer    Customer @relation(fields: [customerId], references: [id])
+  customerId  Int
+  line1       String
+  line2       String?
+  city        String
+  state       String
+  zip         String
+  country     String
+  orders      Order[]
+}
+
+model Wishlist {
+  id          Int      @id @default(autoincrement())
+  customer    Customer @relation(fields: [customerId], references: [id])
+  customerId  Int
+  products    Product[]
+}
+
+model Subscription {
+  id           Int      @id @default(autoincrement())
+  customer     Customer @relation(fields: [customerId], references: [id])
+  customerId   Int
+  plan         String
+  nextDelivery DateTime
+}
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  product     Product  @relation(fields: [productId], references: [id])
+  productId   Int
+  customer    Customer @relation(fields: [customerId], references: [id])
+  customerId  Int
+  rating      Int
+  comment     String?
+  createdAt   DateTime @default(now())
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  email     String
+  message   String
+  status    String   @default("Unread")
+  createdAt DateTime @default(now())
+}
+
+model WalletTopUp {
+  id            Int      @id @default(autoincrement())
+  customer      Customer @relation(fields: [customerId], references: [id])
+  customerId    Int
+  amount        Decimal
+  screenshotUrl String
+  status        String   @default("Pending") // Pending, Approved, Rejected
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
