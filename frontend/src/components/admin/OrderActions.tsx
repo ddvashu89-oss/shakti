@@ -15,7 +15,7 @@ export default function OrderActions({ orderId, currentStatus }: { orderId: numb
     setIsLoading(true);
     setIsOpen(false);
     try {
-      const res = await fetch(`http://127.0.0.1:4000/api/orders/${orderId}/status`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })

@@ -1,7 +1,7 @@
 import { Search, Mail, Phone } from 'lucide-react';
 import CustomerActions from '@/components/admin/CustomerActions';
 
-const API_URL = 'http://127.0.0.1:4000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api';
 
 async function getCustomers() {
   try {

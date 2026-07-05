@@ -63,7 +63,6 @@ export default function Navbar({ isLoggedIn = false }: { isLoggedIn?: boolean })
           <nav className="hidden lg:flex items-center gap-8 text-sm font-bold text-shakti-dark">
             <Link href="/" className="hover:text-shakti-rust transition-colors uppercase tracking-[0.15em] relative group">Home<span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-shakti-rust transition-all duration-300 group-hover:w-full"></span></Link>
             <Link href="/categories" className="hover:text-shakti-rust transition-colors uppercase tracking-[0.15em] relative group">Products<span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-shakti-rust transition-all duration-300 group-hover:w-full"></span></Link>
-            <Link href="/story" className="hover:text-shakti-rust transition-colors uppercase tracking-[0.15em] relative group">Story<span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-shakti-rust transition-all duration-300 group-hover:w-full"></span></Link>
             <Link href="/contact" className="hover:text-shakti-rust transition-colors uppercase tracking-[0.15em] relative group">Contact<span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-shakti-rust transition-all duration-300 group-hover:w-full"></span></Link>
           </nav>
         </div>

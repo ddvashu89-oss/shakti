@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 
-const API_URL = 'http://127.0.0.1:4000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api';
 
 export async function placeOrderAction(items: { productId: number, quantity: number }[], paymentMethod: string = 'online') {
   const cookieStore = await cookies();

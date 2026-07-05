@@ -21,7 +21,7 @@ export default function CustomerActions({ customerId }: { customerId: number }) 
     
     setIsDeleting(true);
     try {
-      const res = await fetch(`http://127.0.0.1:4000/api/customers/${customerId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/customers/${customerId}`, {
         method: 'DELETE',
       });
       const data = await res.json();

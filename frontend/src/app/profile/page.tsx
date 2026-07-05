@@ -34,10 +34,10 @@ export default function ProfilePage() {
     const parsedUser = JSON.parse(userData);
 
     Promise.all([
-      fetch('http://127.0.0.1:4000/api/user/orders', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/user/orders', {
         headers: { 'Authorization': `Bearer ${token}` }
       }).then(res => res.json()),
-      fetch('http://127.0.0.1:4000/api/wallet', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/wallet', {
         headers: { 'Authorization': `Bearer ${token}` }
       }).then(res => res.json())
     ])
@@ -68,7 +68,7 @@ export default function ProfilePage() {
     formData.append('screenshot', screenshotFile);
 
     try {
-      const res = await fetch('http://127.0.0.1:4000/api/wallet/topup', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/wallet/topup', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -81,7 +81,7 @@ export default function ProfilePage() {
         setTopupAmount('');
         setScreenshotFile(null);
         // Refresh wallet data
-        const walletRes = await fetch('http://127.0.0.1:4000/api/wallet', {
+        const walletRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/wallet', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const walletData = await walletRes.json();

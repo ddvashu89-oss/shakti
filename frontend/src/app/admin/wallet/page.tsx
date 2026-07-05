@@ -9,7 +9,7 @@ export default function AdminWalletRequests() {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:4000/api/admin/wallet-requests');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/admin/wallet-requests');
       const data = await res.json();
       setRequests(data);
     } catch (err) {
@@ -26,7 +26,7 @@ export default function AdminWalletRequests() {
   const handleAction = async (id: number, action: 'approve' | 'reject') => {
     if (!confirm(`Are you sure you want to ${action} this request?`)) return;
     try {
-      const res = await fetch(`http://127.0.0.1:4000/api/admin/wallet-requests/${id}/${action}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/admin/wallet-requests/${id}/${action}`, {
         method: 'POST'
       });
       const data = await res.json();
@@ -84,7 +84,7 @@ export default function AdminWalletRequests() {
                     {new Date(req.createdAt).toLocaleDateString()}
                   </td>
                   <td className="p-4">
-                    <a href={`http://127.0.0.1:4000${req.screenshotUrl}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-shakti-rust hover:underline text-sm font-bold">
+                    <a href={`${(process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api').replace('/api', '')}${req.screenshotUrl}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-shakti-rust hover:underline text-sm font-bold">
                       View <ExternalLink className="w-4 h-4" />
                     </a>
                   </td>

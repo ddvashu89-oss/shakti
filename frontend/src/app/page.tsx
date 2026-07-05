@@ -4,7 +4,7 @@ import HeroCarousel from '@/components/HeroCarousel';
 import { AnimatedSection, AnimatedCard } from '@/components/AnimatedSection';
 
 // Use an absolute URL for server-side fetching
-const API_URL = 'http://127.0.0.1:4000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -96,16 +96,23 @@ export default async function Home() {
             <h2 className="text-3xl font-serif text-shakti-dark">Our Staples</h2>
             <Link href="/categories" className="text-shakti-rust font-semibold hover:underline">View All</Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {allCategories.map((cat: { id: number, name: string }, index: number) => (
-              <AnimatedCard key={cat.id} delay={index * 0.05}>
-                <Link href={`/categories/${cat.name.toLowerCase()}`} className="flex flex-col items-center p-6 bg-white rounded-3xl shadow-sm hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer border border-shakti-mitti/5 group w-full h-full">
-                  <span className="text-5xl mb-4 group-hover:scale-110 transition-transform">{getIcon(cat.name)}</span>
-                  <span className="text-sm font-bold text-shakti-dark text-center uppercase tracking-wide">{cat.name}</span>
-                </Link>
-              </AnimatedCard>
-            ))}
-          </div>
+          {allCategories.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-shakti-mitti text-lg mb-2">No categories found or could not connect to the server.</p>
+              <p className="text-sm text-shakti-mitti/70">Ensure the backend API is running and the database is seeded.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              {allCategories.map((cat: { id: number, name: string }, index: number) => (
+                <AnimatedCard key={cat.id} delay={index * 0.05}>
+                  <Link href={`/categories/${cat.name.toLowerCase()}`} className="flex flex-col items-center p-6 bg-white rounded-3xl shadow-sm hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer border border-shakti-mitti/5 group w-full h-full">
+                    <span className="text-5xl mb-4 group-hover:scale-110 transition-transform">{getIcon(cat.name)}</span>
+                    <span className="text-sm font-bold text-shakti-dark text-center uppercase tracking-wide">{cat.name}</span>
+                  </Link>
+                </AnimatedCard>
+              ))}
+            </div>
+          )}
         </section>
         </AnimatedSection>
 
@@ -117,36 +124,42 @@ export default async function Home() {
               <TrendingUp className="w-8 h-8 text-shakti-rust"/> Aaj Taaza Nikla
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {popularProducts.map((prod: { id: number, imageUrl?: string, name: string, rating?: number, description?: string, price: number | string, oldPrice?: number | string }, index: number) => (
-              <AnimatedCard key={prod.id} delay={index * 0.1}>
-                <Link href={`/products/${prod.id}`} className="bg-white rounded-[2rem] p-4 shadow-sm hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 border border-shakti-mitti/5 group relative block flex flex-col h-full">
-                  <div className="aspect-square bg-shakti-cream rounded-2xl mb-4 overflow-hidden relative">
-                    <img 
-                      src={prod.imageUrl || 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d'} 
-                      alt={prod.name} 
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" 
-                    />
-                  </div>
-                  <div className="flex items-center gap-1 text-shakti-sarson mb-2 text-sm">
-                    <Star className="w-4 h-4 fill-current" />
-                    <span className="text-shakti-dark font-bold">{prod.rating || 4.5}</span>
-                  </div>
-                  <h3 className="font-bold text-shakti-dark text-lg mb-1 truncate">{prod.name}</h3>
-                  <div className="inline-block bg-shakti-cream text-shakti-rust text-xs font-semibold px-2 py-1 rounded-md mb-4 self-start">
-                    {prod.description || 'Fresh Stock'}
-                  </div>
-                  <div className="flex items-center gap-2 mb-6 mt-auto">
-                    <span className="font-black text-2xl text-shakti-dark">₹{prod.price}</span>
-                    {prod.oldPrice && <span className="text-sm text-shakti-mitti line-through">₹{prod.oldPrice}</span>}
-                  </div>
-                  <div className="w-full text-center bg-shakti-dark text-white font-bold py-3.5 rounded-xl group-hover:bg-shakti-rust transition-colors duration-300 uppercase tracking-[0.2em] text-xs">
-                    View Details
-                  </div>
-                </Link>
-              </AnimatedCard>
-            ))}
-          </div>
+          {popularProducts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-shakti-mitti text-lg mb-2">No popular products found.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {popularProducts.map((prod: { id: number, imageUrl?: string, name: string, rating?: number, description?: string, price: number | string, oldPrice?: number | string }, index: number) => (
+                <AnimatedCard key={prod.id} delay={index * 0.1}>
+                  <Link href={`/products/${prod.id}`} className="bg-white rounded-[2rem] p-4 shadow-sm hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 border border-shakti-mitti/5 group relative block flex flex-col h-full">
+                    <div className="aspect-square bg-shakti-cream rounded-2xl mb-4 overflow-hidden relative">
+                      <img 
+                        src={prod.imageUrl || 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d'} 
+                        alt={prod.name} 
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" 
+                      />
+                    </div>
+                    <div className="flex items-center gap-1 text-shakti-sarson mb-2 text-sm">
+                      <Star className="w-4 h-4 fill-current" />
+                      <span className="text-shakti-dark font-bold">{prod.rating || 4.5}</span>
+                    </div>
+                    <h3 className="font-bold text-shakti-dark text-lg mb-1 truncate">{prod.name}</h3>
+                    <div className="inline-block bg-shakti-cream text-shakti-rust text-xs font-semibold px-2 py-1 rounded-md mb-4 self-start">
+                      {prod.description || 'Fresh Stock'}
+                    </div>
+                    <div className="flex items-center gap-2 mb-6 mt-auto">
+                      <span className="font-black text-2xl text-shakti-dark">₹{prod.price}</span>
+                      {prod.oldPrice && <span className="text-sm text-shakti-mitti line-through">₹{prod.oldPrice}</span>}
+                    </div>
+                    <div className="w-full text-center bg-shakti-dark text-white font-bold py-3.5 rounded-xl group-hover:bg-shakti-rust transition-colors duration-300 uppercase tracking-[0.2em] text-xs">
+                      View Details
+                    </div>
+                  </Link>
+                </AnimatedCard>
+              ))}
+            </div>
+          )}
         </section>
         </AnimatedSection>
 

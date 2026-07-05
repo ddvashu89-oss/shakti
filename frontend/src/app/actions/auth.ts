@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-const API_URL = 'http://127.0.0.1:4000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api';
 
 export async function sendOtpAction(formData: FormData) {
   const email = formData.get('email') as string;

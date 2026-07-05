@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Search, Edit, Trash2 } from 'lucide-react';
 import ProductModal from '@/components/admin/ProductModal';
 
-const API_URL = 'http://127.0.0.1:4000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api';
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<any[]>([]);

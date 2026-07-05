@@ -22,7 +22,7 @@ export default function CustomerEditForm({ customer }: { customer: CustomerData 
     setIsSaving(true);
     
     try {
-      const res = await fetch(`http://127.0.0.1:4000/api/customers/${customer.id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/customers/${customer.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

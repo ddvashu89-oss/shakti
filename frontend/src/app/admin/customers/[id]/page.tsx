@@ -1,7 +1,7 @@
 import { ArrowLeft, Mail, Calendar, ShoppingBag, MapPin } from 'lucide-react';
 import Link from 'next/link';
 
-const API_URL = 'http://127.0.0.1:4000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api';
 
 async function getCustomer(id: string) {
   try {
