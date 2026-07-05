@@ -99,6 +99,7 @@ router.post('/orders', authenticateToken, async (req: any, res: any) => {
           data: { walletBalance: Number(user.walletBalance) - total }
         })
       ]);
+      req.app.get('io')?.emit('admin-update');
       return res.json({ success: true, order });
     }
 
@@ -116,6 +117,7 @@ router.post('/orders', authenticateToken, async (req: any, res: any) => {
       include: { items: true }
     });
 
+    req.app.get('io')?.emit('admin-update');
     res.json({ success: true, order });
   } catch (error) {
     console.error('Order creation error:', error);
@@ -315,6 +317,7 @@ router.put('/orders/:id/status', async (req, res) => {
       where: { id: parseInt(req.params.id) },
       data: { status }
     });
+    req.app.get('io')?.emit('admin-update');
     res.json({ success: true, order });
   } catch (error) {
     res.status(500).json({ error: 'Failed to update order status' });
@@ -465,6 +468,7 @@ router.put('/messages/:id/read', async (req, res) => {
       where: { id: parseInt(req.params.id) },
       data: { status: 'Read' }
     });
+    req.app.get('io')?.emit('admin-update');
     res.json({ success: true, message });
   } catch (error) {
     res.status(500).json({ error: 'Failed to update message' });

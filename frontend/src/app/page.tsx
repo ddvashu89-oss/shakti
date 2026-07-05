@@ -1,23 +1,9 @@
 import Link from 'next/link';
-import { Star, ShieldCheck, ThumbsUp, Sparkles, TrendingUp, ChefHat, ShoppingBag, Camera, HeartPulse, Flame, ChevronRight } from 'lucide-react';
-import HeroCarousel from '@/components/HeroCarousel';
-import { AnimatedSection, AnimatedCard } from '@/components/AnimatedSection';
 
 // Use an absolute URL for server-side fetching
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api';
 
 export const dynamic = 'force-dynamic';
-
-async function getCategories() {
-  try {
-    const res = await fetch(`${API_URL}/categories`, { cache: 'no-store' });
-    if (!res.ok) return [];
-    return await res.json();
-  } catch (error) {
-    console.error('Failed to fetch categories:', error);
-    return [];
-  }
-}
 
 async function getProducts() {
   try {
@@ -31,264 +17,153 @@ async function getProducts() {
 }
 
 export default async function Home() {
-  const allCategories = await getCategories();
   const allProducts = await getProducts();
-  
-  // Map icons manually for now or use default
-  const getIcon = (name: string) => {
-    const icons: Record<string, string> = {
-      'Rice & Atta': '🌾',
-      'Dairy': '🥛',
-      'Masale': '🌶️',
-      'Snacks': '🍪',
-      'Vegetables': '🥦'
-    };
-    return icons[name] || '🛒';
-  };
-
-  // Limit to top 4 popular products
   const popularProducts = allProducts.slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-shakti-cream flex flex-col font-sans">
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <div className="min-h-screen bg-[#f3efe6] flex flex-col font-sans">
+      <main className="flex-1 w-full">
         
-        {/* Heritage Hero Section */}
-        <AnimatedSection delay={0.1}>
-        <section className="bg-gradient-to-br from-shakti-dark via-shakti-card to-shakti-mitti rounded-[2.5rem] p-8 sm:p-16 text-shakti-cream flex flex-col md:flex-row items-center justify-between shadow-2xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-          <div className="max-w-2xl relative z-10">
-            <div className="inline-block px-5 py-2 rounded-full border border-shakti-sarson/30 bg-shakti-sarson/10 text-shakti-sarson text-xs font-bold tracking-[0.2em] uppercase mb-8 backdrop-blur-sm">Since 1900 • Hisar</div>
-            <h1 className="text-5xl sm:text-7xl font-serif mb-6 leading-tight tracking-tight text-white drop-shadow-sm">Shuddhata hi asli<br/><span className="text-shakti-sarson">Shakti</span> hai.</h1>
-            <p className="text-shakti-cream/90 text-xl mb-12 font-medium max-w-lg leading-relaxed">Aaj subah pisa atta. Aaj shaam aapki rasoi mein. Pure, fresh, and grounded in 125 years of family trust.</p>
-            <Link href="/categories" className="inline-block bg-gradient-to-r from-shakti-sarson to-shakti-gold text-shakti-dark font-bold py-4 px-10 rounded-full hover:shadow-[0_10px_40px_rgba(240,201,63,0.3)] transition-all duration-300 hover:-translate-y-1 text-lg">
-              Explore Our Staples
-            </Link>
+        {/* Top Dark Stats Bar */}
+        <div className="bg-[#251c17] text-white/90 py-10 px-8 mx-auto max-w-[95%] rounded-3xl my-6 flex flex-wrap gap-8 justify-between items-center shadow-lg">
+          <div className="flex-1 min-w-[200px] border-r border-white/10 last:border-0">
+            <h3 className="text-4xl font-serif text-[#d5a046] mb-1 font-bold">1900</h3>
+            <p className="text-sm font-medium">Se aaj tak — ek hi dukaan, ek hi bharosa</p>
           </div>
-          <div className="mt-12 md:mt-0 relative z-10 hidden md:block">
-             <HeroCarousel />
+          <div className="flex-1 min-w-[200px] border-r border-white/10 last:border-0 hidden md:block">
+            <h3 className="text-4xl font-serif text-[#d5a046] mb-1 font-bold">5</h3>
+            <p className="text-sm font-medium">Pidhiyaan, ek hi rasoi ka waada</p>
           </div>
-        </section>
-        </AnimatedSection>
+          <div className="flex-1 min-w-[200px] border-r border-white/10 last:border-0 hidden lg:block">
+            <h3 className="text-4xl font-serif text-[#d5a046] mb-1 font-bold">0</h3>
+            <p className="text-sm font-medium">Bicholiye — apni chakki, apni ghani</p>
+          </div>
+          <div className="flex-1 min-w-[200px]">
+            <h3 className="text-4xl font-serif text-[#d5a046] mb-1 font-bold">100%</h3>
+            <p className="text-sm font-medium">Shudh — ya paisa wapas</p>
+          </div>
+        </div>
 
-        {/* Guarantee Band */}
-        <AnimatedSection delay={0.2}>
-        <section className="mt-12 bg-white/70 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-sm border border-shakti-mitti/5 grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-shakti-mitti/10">
-          <div className="flex items-center gap-5 pt-4 md:pt-0 md:px-4 group">
-             <div className="bg-shakti-cream p-4 rounded-2xl text-shakti-rust group-hover:bg-shakti-rust group-hover:text-white transition-colors duration-300"><Sparkles className="w-6 h-6" /></div>
-             <div><h4 className="font-bold text-shakti-dark">Freshness Guaranteed</h4><p className="text-sm text-shakti-mitti">Atta older than 7 days is on us.</p></div>
+        {/* Hero Section */}
+        <section className="mx-auto max-w-[95%] relative bg-gradient-to-br from-[#a04a29] to-[#693021] rounded-[2rem] overflow-hidden min-h-[500px] flex items-center p-8 md:p-16 mb-20 shadow-xl">
+          {/* Faint Hindi Watermark */}
+          <div className="absolute -right-20 top-1/2 -translate-y-1/2 text-[30rem] font-serif text-black/5 select-none pointer-events-none leading-none">
+            शक्ति
           </div>
-          <div className="flex items-center gap-5 pt-4 md:pt-0 md:px-4 group">
-             <div className="bg-shakti-cream p-4 rounded-2xl text-shakti-rust group-hover:bg-shakti-rust group-hover:text-white transition-colors duration-300"><ShieldCheck className="w-6 h-6" /></div>
-             <div><h4 className="font-bold text-shakti-dark">Shuddhata Challenge</h4><p className="text-sm text-shakti-mitti">Find any impurity, get a reward.</p></div>
-          </div>
-          <div className="flex items-center gap-5 pt-4 md:pt-0 md:px-4 group">
-             <div className="bg-shakti-cream p-4 rounded-2xl text-shakti-rust group-hover:bg-shakti-rust group-hover:text-white transition-colors duration-300"><ThumbsUp className="w-6 h-6" /></div>
-             <div><h4 className="font-bold text-shakti-dark">Naram Roti Waapsi</h4><p className="text-sm text-shakti-mitti">100% return if not satisfied.</p></div>
-          </div>
-        </section>
-        </AnimatedSection>
-
-        {/* Categories */}
-        <AnimatedSection delay={0.1}>
-        <section className="mt-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-serif text-shakti-dark">Our Staples</h2>
-            <Link href="/categories" className="text-shakti-rust font-semibold hover:underline">View All</Link>
-          </div>
-          {allCategories.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-shakti-mitti text-lg mb-2">No categories found or could not connect to the server.</p>
-              <p className="text-sm text-shakti-mitti/70">Ensure the backend API is running and the database is seeded.</p>
+          
+          <div className="relative z-10 max-w-3xl">
+            <div className="flex items-center gap-4 text-white/60 text-xs font-bold tracking-widest uppercase mb-10">
+              <span className="w-12 h-px bg-white/30"></span>
+              EST. 1900 • HISAR, HARYANA • 5 PIDHIYAAN
             </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-              {allCategories.map((cat: { id: number, name: string }, index: number) => (
-                <AnimatedCard key={cat.id} delay={index * 0.05}>
-                  <Link href={`/categories/${cat.name.toLowerCase()}`} className="flex flex-col items-center p-6 bg-white rounded-3xl shadow-sm hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer border border-shakti-mitti/5 group w-full h-full">
-                    <span className="text-5xl mb-4 group-hover:scale-110 transition-transform">{getIcon(cat.name)}</span>
-                    <span className="text-sm font-bold text-shakti-dark text-center uppercase tracking-wide">{cat.name}</span>
-                  </Link>
-                </AnimatedCard>
-              ))}
-            </div>
-          )}
-        </section>
-        </AnimatedSection>
-
-        {/* Aaj Taaza Nikla (Popular) */}
-        <AnimatedSection delay={0.2}>
-        <section className="mt-20 mb-20">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-serif text-shakti-dark flex items-center gap-3">
-              <TrendingUp className="w-8 h-8 text-shakti-rust"/> Aaj Taaza Nikla
-            </h2>
-          </div>
-          {popularProducts.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-shakti-mitti text-lg mb-2">No popular products found.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {popularProducts.map((prod: { id: number, imageUrl?: string, name: string, rating?: number, description?: string, price: number | string, oldPrice?: number | string }, index: number) => (
-                <AnimatedCard key={prod.id} delay={index * 0.1}>
-                  <Link href={`/products/${prod.id}`} className="bg-white rounded-[2rem] p-4 shadow-sm hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 border border-shakti-mitti/5 group relative block flex flex-col h-full">
-                    <div className="aspect-square bg-shakti-cream rounded-2xl mb-4 overflow-hidden relative">
-                      <img 
-                        src={prod.imageUrl || 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d'} 
-                        alt={prod.name} 
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" 
-                      />
-                    </div>
-                    <div className="flex items-center gap-1 text-shakti-sarson mb-2 text-sm">
-                      <Star className="w-4 h-4 fill-current" />
-                      <span className="text-shakti-dark font-bold">{prod.rating || 4.5}</span>
-                    </div>
-                    <h3 className="font-bold text-shakti-dark text-lg mb-1 truncate">{prod.name}</h3>
-                    <div className="inline-block bg-shakti-cream text-shakti-rust text-xs font-semibold px-2 py-1 rounded-md mb-4 self-start">
-                      {prod.description || 'Fresh Stock'}
-                    </div>
-                    <div className="flex items-center gap-2 mb-6 mt-auto">
-                      <span className="font-black text-2xl text-shakti-dark">₹{prod.price}</span>
-                      {prod.oldPrice && <span className="text-sm text-shakti-mitti line-through">₹{prod.oldPrice}</span>}
-                    </div>
-                    <div className="w-full text-center bg-shakti-dark text-white font-bold py-3.5 rounded-xl group-hover:bg-shakti-rust transition-colors duration-300 uppercase tracking-[0.2em] text-xs">
-                      View Details
-                    </div>
-                  </Link>
-                </AnimatedCard>
-              ))}
-            </div>
-          )}
-        </section>
-        </AnimatedSection>
-
-        {/* Smart Services */}
-        <AnimatedSection delay={0.1}>
-        <section className="mt-20 mb-20 max-w-5xl mx-auto">
-          <div className="flex items-center justify-center mb-10">
-            <h2 className="text-3xl font-serif text-shakti-dark text-center">Smart Services</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             
-            <AnimatedCard delay={0.1}>
-            <Link href="/services/reels-to-recipe" className="bg-white rounded-3xl p-6 flex items-center justify-between border border-shakti-mitti/5 shadow-sm hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer group h-full">
-              <div className="flex items-center gap-5">
-                <div className="bg-orange-50 text-orange-600 p-3 rounded-2xl">
-                  <ChefHat className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-shakti-dark mb-1">Reels → Recipe</h3>
-                  <p className="text-sm text-shakti-mitti">Paste an Instagram/YouTube link. Recipe + groceries — ready.</p>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-shakti-mitti group-hover:text-shakti-dark group-hover:translate-x-1 transition-all" />
-            </Link>
-            </AnimatedCard>
-
-            <AnimatedCard delay={0.2}>
-            <Link href="/services/daily-essentials" className="bg-white rounded-3xl p-6 flex items-center justify-between border border-shakti-mitti/5 shadow-sm hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer group h-full">
-              <div className="flex items-center gap-5">
-                <div className="bg-blue-50 text-blue-600 p-3 rounded-2xl">
-                  <ShoppingBag className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-shakti-dark mb-1">Daily Essentials</h3>
-                  <p className="text-sm text-shakti-mitti">Active • ₹79/day • no delivery fee</p>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-shakti-mitti group-hover:text-shakti-dark group-hover:translate-x-1 transition-all" />
-            </Link>
-            </AnimatedCard>
-
-            <AnimatedCard delay={0.3}>
-            <Link href="/services/ghar-aur-mandir" className="bg-white rounded-3xl p-6 flex items-center justify-between border border-shakti-mitti/5 shadow-sm hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer group h-full">
-              <div className="flex items-center gap-5">
-                <div className="bg-emerald-50 text-emerald-700 p-3 rounded-2xl">
-                  <Sparkles className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-shakti-dark mb-1">Ghar aur Mandir</h3>
-                  <p className="text-sm text-shakti-mitti">Pooja kits + custom wizard — for daily aarti to Griha Pravesh.</p>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-shakti-mitti group-hover:text-shakti-dark group-hover:translate-x-1 transition-all" />
-            </Link>
-            </AnimatedCard>
-
-            <AnimatedCard delay={0.4}>
-            <Link href="/services/cook-and-earn" className="bg-white rounded-3xl p-6 flex items-center justify-between border border-shakti-mitti/5 shadow-sm hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer group h-full">
-              <div className="flex items-center gap-5">
-                <div className="bg-green-50 text-green-700 p-3 rounded-2xl">
-                  <Camera className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-shakti-dark mb-1">Cook & Earn</h3>
-                  <p className="text-sm text-shakti-mitti">Made a dish? Upload a pic. AI verifies. Coins come home.</p>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-shakti-mitti group-hover:text-shakti-dark group-hover:translate-x-1 transition-all" />
-            </Link>
-            </AnimatedCard>
-
-            <AnimatedCard delay={0.5}>
-            <Link href="/services/health-planner" className="bg-white rounded-3xl p-6 flex items-center justify-between border border-shakti-mitti/5 shadow-sm hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer group h-full">
-              <div className="flex items-center gap-5">
-                <div className="bg-teal-50 text-teal-700 p-3 rounded-2xl">
-                  <HeartPulse className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-shakti-dark mb-1">Health-aware planner</h3>
-                  <p className="text-sm text-shakti-mitti">Diabetic, PCOS, HTN or a routine — we plan monthly grocery + 7-day meals, science-backed.</p>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-shakti-mitti group-hover:text-shakti-dark group-hover:translate-x-1 transition-all" />
-            </Link>
-            </AnimatedCard>
-
-            <AnimatedCard delay={0.6}>
-            <Link href="/services/priest-on-call" className="bg-white rounded-3xl p-6 flex items-center justify-between border border-shakti-mitti/5 shadow-sm hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer group h-full">
-              <div className="flex items-center gap-5">
-                <div className="bg-stone-100 text-stone-600 p-3 rounded-2xl">
-                  <Flame className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-shakti-dark mb-1">Priest-on-Call</h3>
-                  <p className="text-sm text-shakti-mitti">Certified pandit-ji at your doorstep for aarti to Griha Pravesh.</p>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-shakti-mitti group-hover:text-shakti-dark group-hover:translate-x-1 transition-all" />
-            </Link>
-            </AnimatedCard>
-
-          </div>
-        </section>
-        </AnimatedSection>
-
-        {/* Our Story */}
-        <AnimatedSection delay={0.2}>
-        <section className="mt-24 mb-16 bg-white rounded-[3rem] p-10 sm:p-20 border border-shakti-mitti/5 shadow-xl flex flex-col lg:flex-row gap-16 items-center">
-          <div className="flex-1">
-            <h2 className="text-4xl font-serif text-shakti-dark mb-6">Our Story</h2>
-            <p className="text-lg text-shakti-mitti leading-relaxed mb-6">
-              It started in 1900 in the bustling lanes of Hisar, Haryana. Our great-grandfather set up a small chakki to provide pure, unadulterated wheat flour to the neighborhood. 
+            <h1 className="text-5xl md:text-7xl font-serif text-white mb-8 leading-[1.1] tracking-tight drop-shadow-sm">
+              Aaj subah <i className="text-[#d5a046]">pisa</i> atta.<br/>
+              Aaj shaam aapki <i className="text-[#d5a046]">rasoi</i> mein.
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl font-light">
+              Warehouse se nahi — <strong className="text-[#d5a046] font-semibold">humari apni chakki aur ghani</strong> se. 125 saal se ek hi kaam, poori imaandaari se.
             </p>
-            <p className="text-lg text-shakti-mitti leading-relaxed mb-8">
-              Five generations later, our methods have scaled, but our promise remains exactly the same. We don&apos;t believe in 10-minute delivery if it compromises quality. We believe in fresh ingredients, processed with care, and delivered to your family&apos;s kitchen exactly when you need them.
-            </p>
-            <button className="text-shakti-rust font-bold uppercase tracking-widest border-b-2 border-shakti-rust pb-1 hover:text-shakti-dark hover:border-shakti-dark transition-colors">Read Full Story</button>
-          </div>
-          <div className="flex-1 w-full relative">
-            <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
-               <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" alt="Old Kiryana Store" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+            
+            <div className="flex flex-wrap items-center gap-6">
+              <Link href="/categories" className="bg-[#d5a046] text-[#201410] font-bold text-lg px-8 py-4 rounded-full hover:bg-white transition-colors duration-300 shadow-lg">
+                Aaj ka taaza dekhein
+              </Link>
+              <Link href="/story" className="text-white border border-white/40 px-8 py-4 rounded-full hover:bg-white/10 transition-colors duration-300 font-medium">
+                Humari kahani &rarr;
+              </Link>
             </div>
-            <div className="absolute -bottom-6 -left-6 bg-shakti-sarson p-6 rounded-2xl shadow-xl max-w-[200px] rotate-[-5deg]">
-              <p className="font-serif text-shakti-dark font-bold text-lg leading-tight">125 Years of Family Trust.</p>
+
+            <div className="mt-16 inline-flex items-center gap-3 border border-white/20 rounded-full px-4 py-2 bg-black/10 backdrop-blur-sm">
+               <span className="w-2.5 h-2.5 rounded-full bg-[#d5a046]"></span>
+               <span className="text-white/70 text-xs font-bold tracking-widest uppercase">Har pack pe "Pisa Gaya" ki date — check karke lo</span>
             </div>
           </div>
         </section>
-        </AnimatedSection>
 
+        {/* Categories Grid (Humari rasoi, aapke ghar) */}
+        <section className="max-w-[95%] mx-auto mb-20">
+          <div className="flex items-end justify-between mb-10 px-2">
+            <h2 className="text-4xl font-serif text-[#201410] font-bold">Humari rasoi, aapke ghar</h2>
+            <Link href="/categories" className="text-sm font-bold text-[#8a3b21] uppercase tracking-widest hover:underline hidden sm:block">
+              Sab Dekhein &rarr;
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
+            {[
+              { title: 'Atta', sub: 'Chakki-Fresh', color: 'bg-[#a37c35]', letter: 'आ' },
+              { title: 'Sarson Tel', sub: 'Kachi Ghani', color: 'bg-[#a04a29]', letter: 'ते' },
+              { title: 'Dal', sub: 'Single-Origin', color: 'bg-[#8a3b21]', letter: 'दा' },
+              { title: 'Masala', sub: 'Recipe Blends', color: 'bg-[#60623a]', letter: 'म' },
+              { title: 'Achaar', sub: 'Small-Batch', color: 'bg-[#693021]', letter: 'अ' },
+              { title: 'Makhana', sub: 'Roasted', color: 'bg-[#a8825c]', letter: 'म' },
+            ].map((cat, i) => (
+              <Link href="/categories" key={i} className={`${cat.color} rounded-2xl p-6 h-48 flex flex-col items-center justify-end relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300 shadow-md`}>
+                <span className="absolute top-2 right-4 text-[7rem] font-serif text-white/10 leading-none group-hover:scale-110 transition-transform duration-500">
+                  {cat.letter}
+                </span>
+                <h3 className="text-white font-serif text-2xl font-bold relative z-10">{cat.title}</h3>
+                <p className="text-white/80 text-[10px] font-bold tracking-[0.2em] uppercase mt-1 relative z-10">{cat.sub}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Story Section */}
+        <section className="max-w-[95%] mx-auto mb-20 bg-[#e8e2d4] rounded-[3rem] overflow-hidden flex flex-col md:flex-row shadow-sm border border-[#251c17]/5">
+          <div className="flex-1 p-10 md:p-16 lg:p-24 flex flex-col justify-center">
+            <div className="text-[#a04a29] text-xs font-bold tracking-[0.2em] uppercase mb-8">
+              Humari Kahani • 1900 Se
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#201410] mb-8 leading-tight">
+              Ek dukaan. <i className="text-[#a04a29]">Paanch pidhiyaan.</i> Ek hi waada.
+            </h2>
+            <p className="text-[#201410]/80 text-lg md:text-xl leading-relaxed mb-6 font-medium">
+              Jo humne 125 saal pehle kiya, wahi aaj karte hain — sahi anaaj chunna, apni chakki pe peesna, aur bina milawat ke aapke ghar bhejna. Naye brands ko bharosa kamaana padta hai. Hum us bharose ke saath paida hue.
+            </p>
+            <p className="text-[#201410]/80 text-lg md:text-xl leading-relaxed mb-10 font-medium">
+              Ab wahi Shakti seedhe aapki dehleez tak — bina bicholiye, bina samjhaute.
+            </p>
+            <Link href="/story" className="text-[#201410] font-bold tracking-widest uppercase text-sm border-b-2 border-[#d5a046] pb-1 w-max hover:text-[#a04a29] transition-colors">
+              Poori Kahani Padhein &rarr;
+            </Link>
+          </div>
+          <div className="flex-1 bg-[#201410] relative flex items-center justify-center p-12 min-h-[400px]">
+            <div className="text-center">
+               <h2 className="text-[6rem] md:text-[8rem] font-serif text-[#d5a046]/40 leading-none mb-4">शक्ति</h2>
+               <p className="text-[#d5a046] text-xl font-serif italic">since 1900</p>
+            </div>
+            <div className="absolute bottom-8 left-0 right-0 text-center">
+               <p className="text-white/30 text-xs tracking-[0.3em] font-mono uppercase">
+                 [ Yahan Dadaji / Dukaan / Chakki Ki Asli Purani Photo ]
+               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Guarantees Box */}
+        <section className="max-w-[95%] mx-auto mb-20 bg-[#251c17] rounded-3xl p-10 md:p-16 flex flex-col md:flex-row gap-12 justify-between items-start text-center md:text-left shadow-xl">
+           <div className="flex-1 border-b md:border-b-0 md:border-r border-white/10 pb-8 md:pb-0 md:pr-12 last:border-0">
+             <h3 className="text-3xl font-serif text-[#d5a046] mb-4">Fresh-ya-Free</h3>
+             <p className="text-white/80 leading-relaxed font-medium">
+               Atta 7 din se purana pisa hua? Bilkul free. Date pack pe likhi hai — khud check karo.
+             </p>
+           </div>
+           <div className="flex-1 border-b md:border-b-0 md:border-r border-white/10 pb-8 md:pb-0 md:pr-12 last:border-0">
+             <h3 className="text-3xl font-serif text-[#d5a046] mb-4">Shudhता Challenge</h3>
+             <p className="text-white/80 leading-relaxed font-medium">
+               Humare tel/atte mein milawat dhoond ke dikhao. Humein apni shudhता pe utna bharosa hai.
+             </p>
+           </div>
+           <div className="flex-1">
+             <h3 className="text-3xl font-serif text-[#d5a046] mb-4">Naram Roti Waapsi</h3>
+             <p className="text-white/80 leading-relaxed font-medium">
+               Ghar walon ko pasand na aaye? Bina sawaal poora paisa wapas.
+             </p>
+           </div>
+        </section>
 
       </main>
     </div>

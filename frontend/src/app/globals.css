@@ -11,14 +11,14 @@
   --font-sans: var(--font-jakarta), sans-serif;
   --font-serif: var(--font-playfair), serif;
   
-  /* Refined, deeper Kiryana colors for premium feel */
-  --color-shakti-dark: #1F0D15;
-  --color-shakti-card: #3D1629;
-  --color-shakti-gold: #D4A348;
-  --color-shakti-mitti: #63402E;
-  --color-shakti-rust: #8F3A1D;
-  --color-shakti-sarson: #F0C93F;
-  --color-shakti-cream: #FDFBF9;
+  /* Refined, deeper Kiryana colors for premium heritage feel */
+  --color-shakti-dark: #201410;    /* Dark brown for text */
+  --color-shakti-card: #251c17;    /* Almost black-brown for footer/bars */
+  --color-shakti-gold: #d5a046;    /* Mustard yellow for text highlights */
+  --color-shakti-mitti: #8a3b21;   /* Rich rust/brown for buttons/accents */
+  --color-shakti-rust: #a04a29;    /* Bright rust */
+  --color-shakti-sarson: #d5a046;  /* Mustard yellow */
+  --color-shakti-cream: #f3efe6;   /* Warm cream background */
 }
 
 body {

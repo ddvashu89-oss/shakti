@@ -9,16 +9,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Navbar({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   const pathname = usePathname();
   const [cartCount, setCartCount] = useState(0);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const updateCount = () => {
@@ -46,83 +38,144 @@ export default function Navbar({ isLoggedIn = false }: { isLoggedIn?: boolean })
     return null;
   }
 
+  const categories = [
+    { name: 'GHAR', href: '/' },
+    { name: 'ATTA & ANAAJ', href: '/categories/atta' },
+    { name: 'SARSON TEL', href: '/categories/oil' },
+    { name: 'DAL & PULSES', href: '/categories/dal' },
+    { name: 'MASALA', href: '/categories/masala' },
+    { name: 'ACHAAR', href: '/categories/achaar' },
+    { name: 'HUMARI KAHANI', href: '/story' },
+  ];
+
   return (
-    <motion.header 
-      initial={{ y: -100, opacity: 0 }} 
-      animate={{ y: 0, opacity: 1 }} 
-      transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className={`sticky top-0 z-50 transition-all duration-500 bg-shakti-cream ${isScrolled ? 'shadow-md py-2 border-b border-shakti-mitti/20' : 'py-4 border-b border-transparent'}`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <div className="flex items-center gap-8">
-          <div className="flex items-center gap-4">
-            <button className="lg:hidden text-shakti-dark hover:scale-110 transition-transform"><Menu className="w-6 h-6" /></button>
-            <Link href="/" className="text-3xl font-extrabold text-shakti-rust tracking-tight font-serif hover:scale-105 transition-transform origin-left">शक्ति</Link>
-          </div>
-          
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-bold text-shakti-dark">
-            <Link href="/" className="hover:text-shakti-rust transition-colors uppercase tracking-[0.15em] relative group">Home<span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-shakti-rust transition-all duration-300 group-hover:w-full"></span></Link>
-            <Link href="/categories" className="hover:text-shakti-rust transition-colors uppercase tracking-[0.15em] relative group">Products<span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-shakti-rust transition-all duration-300 group-hover:w-full"></span></Link>
-            <Link href="/contact" className="hover:text-shakti-rust transition-colors uppercase tracking-[0.15em] relative group">Contact<span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-shakti-rust transition-all duration-300 group-hover:w-full"></span></Link>
-          </nav>
-        </div>
+    <header className="sticky top-0 z-50 bg-[#f3efe6] border-b border-[#251c17]/10">
+      {/* Top Tier */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4 lg:gap-12">
         
-        <div className="hidden xl:flex flex-1 max-w-lg mx-8 relative group">
-          <input 
-            type="text" 
-            placeholder="Search our fresh, pure staples..." 
-            className="w-full bg-white/60 backdrop-blur-md border border-white/50 rounded-full py-2.5 px-6 pl-12 focus:bg-white focus:ring-2 focus:ring-shakti-sarson transition-all duration-300 outline-none text-shakti-dark placeholder:text-shakti-mitti/70 shadow-inner"
-          />
-          <Search className="w-5 h-5 text-shakti-mitti absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-shakti-rust transition-colors" />
+        {/* Logo */}
+        <div className="flex items-center gap-4">
+          <button 
+            className="lg:hidden text-shakti-dark hover:text-shakti-rust"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+          <Link href="/" className="flex flex-col group">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-4xl font-serif text-[#201410] tracking-tight group-hover:text-shakti-rust transition-colors">शक्ति</span>
+              <span className="text-xl font-serif text-blue-700 tracking-widest font-bold">SHAKTI</span>
+            </div>
+            <span className="text-[10px] text-[#8a3b21] font-bold tracking-widest uppercase">Est. 1900 • Hisar</span>
+          </Link>
         </div>
 
-        <div className="flex items-center gap-4 sm:gap-6">
+        {/* Desktop Search */}
+        <div className="hidden lg:flex flex-1 max-w-2xl relative group">
+          <input 
+            type="text" 
+            placeholder="Atta, sarson tel, dal, masala dhoondein..." 
+            className="w-full bg-white border border-[#251c17]/10 rounded-full py-2.5 px-6 pl-12 focus:outline-none focus:border-shakti-rust focus:ring-1 focus:ring-shakti-rust transition-all text-shakti-dark placeholder:text-shakti-dark/50 font-medium"
+          />
+          <Search className="w-5 h-5 text-shakti-dark/50 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-shakti-rust transition-colors" />
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-6">
           <button 
-            className="xl:hidden text-shakti-dark hover:text-shakti-rust hover:scale-110 transition-all bg-white/50 p-2 rounded-full border border-white/40"
+            className="lg:hidden text-shakti-dark hover:text-shakti-rust"
             onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
           >
-            {isMobileSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+            <Search className="w-5 h-5" />
           </button>
           
-          {isLoggedIn ? (
-            <Link href="/profile" className="text-shakti-dark hover:text-shakti-rust hover:scale-110 transition-all flex items-center gap-1 text-sm font-semibold uppercase tracking-widest bg-white/50 p-2 rounded-full border border-white/40" title="Profile">
-              <User className="w-5 h-5" />
-            </Link>
-          ) : (
-            <Link href="/login" className="interactive-btn text-shakti-dark hover:text-white hover:bg-shakti-rust bg-white/50 border border-white/50 px-4 py-2 rounded-full transition-all flex items-center gap-2 text-sm font-semibold uppercase tracking-widest"><User className="w-4 h-4" /> <span className="hidden sm:inline">Sign In</span></Link>
-          )}
-          <Link href="/cart" className="text-shakti-dark hover:text-shakti-rust hover:scale-110 transition-all relative bg-white/50 p-2 rounded-full border border-white/40">
-            <ShoppingCart className="w-5 h-5" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-shakti-rust text-white shadow-md text-[10px] font-black rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
-                {cartCount}
-              </span>
-            )}
+          <Link href={isLoggedIn ? "/profile" : "/login"} className="hidden sm:flex text-[#201410] hover:text-shakti-rust font-bold text-sm tracking-wide transition-colors">
+            Login
+          </Link>
+
+          <Link href="/cart" className="flex items-center gap-2 group">
+            <ShoppingCart className="w-6 h-6 text-[#201410] group-hover:text-shakti-rust transition-colors" />
+            <span className="bg-[#a04a29] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              {cartCount}
+            </span>
           </Link>
         </div>
       </div>
-      
-      {/* Mobile Search */}
+
+      {/* Bottom Tier - Categories */}
+      <nav className="hidden lg:block border-t border-[#251c17]/5 bg-[#f3efe6]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <ul className="flex items-center gap-8 text-xs font-bold text-[#693021] tracking-widest uppercase">
+            {categories.map((cat, index) => (
+              <li key={index}>
+                <Link 
+                  href={cat.href} 
+                  className={`hover:text-shakti-rust transition-colors ${index === 0 ? 'text-[#a04a29]' : ''}`}
+                >
+                  {cat.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+
+      {/* Mobile Search Dropdown */}
       <AnimatePresence>
         {isMobileSearchOpen && (
           <motion.div 
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="xl:hidden px-4 pt-2 pb-4 overflow-hidden"
+            className="lg:hidden px-4 pb-4 bg-[#f3efe6] overflow-hidden border-t border-[#251c17]/5 pt-4"
           >
-            <div className="relative group">
+            <div className="relative">
               <input 
                 type="text" 
-                placeholder="Search staples..." 
-                className="w-full bg-white/80 backdrop-blur-md border border-white/50 rounded-full py-2 px-4 pl-10 focus:bg-white focus:ring-2 focus:ring-shakti-sarson transition-all outline-none text-shakti-dark placeholder:text-shakti-mitti shadow-inner"
+                placeholder="Atta, sarson tel, dal..." 
+                className="w-full bg-white border border-[#251c17]/10 rounded-full py-2.5 px-4 pl-10 focus:outline-none text-shakti-dark"
                 autoFocus
               />
-              <Search className="w-4 h-4 text-shakti-mitti absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-shakti-rust transition-colors" />
+              <Search className="w-4 h-4 text-shakti-dark/50 absolute left-4 top-1/2 -translate-y-1/2" />
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+
+      {/* Mobile Menu Dropdown */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="lg:hidden bg-[#f3efe6] border-t border-[#251c17]/5 overflow-hidden"
+          >
+            <ul className="px-4 py-2 flex flex-col gap-2">
+              {categories.map((cat, index) => (
+                <li key={index}>
+                  <Link 
+                    href={cat.href} 
+                    className="block py-3 text-sm font-bold text-[#693021] tracking-wider uppercase border-b border-[#251c17]/5"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {cat.name}
+                  </Link>
+                </li>
+              ))}
+              <li className="sm:hidden">
+                <Link 
+                  href={isLoggedIn ? "/profile" : "/login"} 
+                  className="block py-3 text-sm font-bold text-[#a04a29] tracking-wider uppercase"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Login / Profile
+                </Link>
+              </li>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }

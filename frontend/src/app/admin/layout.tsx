@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import AdminTopbar from '@/components/admin/AdminTopbar';
+import AdminRealtimeListener from '@/components/admin/AdminRealtimeListener';
 
 export default function AdminLayout({
   children,
@@ -13,6 +14,7 @@ export default function AdminLayout({
 
   return (
     <div className="flex h-screen bg-black font-sans overflow-hidden text-white">
+      <AdminRealtimeListener />
       <AdminSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
       <div className="flex-1 flex flex-col min-w-0">
         <AdminTopbar onMenuClick={() => setIsSidebarOpen(true)} />
