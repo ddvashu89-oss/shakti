@@ -144,6 +144,50 @@ router.get('/user/orders', authenticateToken, async (req: any, res: any) => {
   }
 });
 
+// Get all categories
+router.get('/categories', async (req, res) => {
+  try {
+    const categories = await prisma.category.findMany();
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch categories' });
+  }
+});
+
+// Get products by category slug/name
+router.get('/categories/:name', async (req, res) => {
+  try {
+    const rawName = req.params.name;
+    
+    // Map URL slugs to actual DB category names
+    let dbCategoryName = rawName;
+    if (rawName.toLowerCase() === 'atta') dbCategoryName = 'Rice & Atta';
+    else if (rawName.toLowerCase() === 'oil') dbCategoryName = 'Dairy'; // fallback for demo
+    else if (rawName.toLowerCase() === 'dal') dbCategoryName = 'Vegetables'; // fallback for demo
+    else if (rawName.toLowerCase() === 'masala') dbCategoryName = 'Masale';
+    else if (rawName.toLowerCase() === 'achaar') dbCategoryName = 'Snacks'; // fallback for demo
+    
+    const category = await prisma.category.findFirst({
+      where: {
+        OR: [
+          { name: dbCategoryName },
+          { name: rawName }
+        ]
+      },
+      include: {
+        products: {
+          include: { category: true, inventory: true }
+        }
+      }
+    });
+
+    if (!category) return res.status(404).json({ error: 'Category not found' });
+    res.json(category);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch category products' });
+  }
+});
+
 // Get all products
 router.get('/products', async (req, res) => {
   try {
