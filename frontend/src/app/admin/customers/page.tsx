@@ -22,8 +22,8 @@ export default async function AdminCustomers() {
         <h1 className="text-2xl font-bold text-white">Customers Directory</h1>
       </div>
 
-      <div className="bg-white rounded-[2rem] shadow-sm border border-shakti-mitti/10 overflow-hidden">
-        <div className="p-6 border-b border-shakti-mitti/10 flex items-center justify-between bg-shakti-cream/30">
+      <div className="bg-white rounded-[2rem] shadow-sm border border-shakti-mitti/10 overflow-hidden min-h-[75vh] flex flex-col">
+        <div className="p-6 border-b border-shakti-mitti/10 flex items-center justify-between bg-shakti-cream/30 shrink-0">
           <div className="relative w-64">
             <input 
               type="text" 
@@ -34,7 +34,7 @@ export default async function AdminCustomers() {
           </div>
         </div>
         
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto flex-1 bg-white">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-shakti-cream text-shakti-mitti text-sm border-b border-shakti-mitti/10">
