@@ -25,8 +25,8 @@ export default function AnalyticsDashboard({ data }: { data: DashboardData | nul
   return (
     <div className="space-y-8 pb-12">
       <div>
-        <h1 className="text-3xl font-bold text-shakti-dark">Analytics Dashboard</h1>
-        <p className="text-shakti-mitti mt-1">Detailed overview of your store&apos;s performance.</p>
+        <h1 className="text-3xl font-bold text-white">Analytics Dashboard</h1>
+        <p className="text-neutral-400 mt-1">Detailed overview of your store&apos;s performance.</p>
       </div>
 
       {/* KPI Cards */}
