@@ -29,7 +29,7 @@ export default function CheckoutPage() {
     // Fetch wallet balance
     const token = localStorage.getItem('token');
     if (token) {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/wallet', {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000/api'}/wallet\`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(res => res.json())
